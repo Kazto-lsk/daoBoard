@@ -242,6 +242,38 @@ public class BoardDAO {
 		return null;
 	}
 	
-	
+	public int getCount(){
+		int cnt=0;
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try{
+			
+			conn = dbConn();
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select count(*) as total from board;");
+
+			if(rs.next()){
+				cnt = rs.getInt("total");
+			}
+
+			return cnt;
+				
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}finally{
+				try {
+					if(rs!=null) rs.close();
+					if(stmt!=null) stmt.close();
+					if(conn!=null) conn.close();
+				}catch(Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		return 0;
+	}
 
 }

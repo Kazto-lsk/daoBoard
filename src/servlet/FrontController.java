@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import service.BoardService;
+import service.CountService;
 import service.DeleteService;
 import service.InsertService;
 import service.LatestService;
@@ -55,6 +56,9 @@ public class FrontController extends HttpServlet {
 		}else if(command.equals("/latestdocument.do")) {
 			service = new LatestService();
 			path = "/view/latest_document.jsp";
+		}else if(command.equals("/count.do")) {
+			service = new CountService();
+			path = "/view/count.jsp";
 		}
 		if(service!=null) service.execute(request, response);
 		
