@@ -17,7 +17,7 @@ public class BoardDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/mydb?useUnicode=true&characterEncoding=utf-8","jspuser","jsppass");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf-8","root","ysc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -194,6 +194,52 @@ public class BoardDAO {
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+	
+	
+	public ArrayList<BoardDTO> getLatest() {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try{
+			conn = dbConn();
+			
+			stmt = conn.createStatement();
+			//Created(작성일) 기준으로 정렬해서 최신 글이 위로 올라오게 해야하고, 1개의 게시글만 리스팅 할 것임으로 limit 1
+			rs = stmt.executeQuery("select number,writer,subject,created from board order by created desc limit 1");
+			
+			ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
+			
+			while(rs.next()){ 
+				BoardDTO board = new BoardDTO();
+				
+				int number = rs.getInt("number");
+				String writer = rs.getString("writer");
+				String subject= rs.getString("subject");
+				Date created = rs.getDate("created");
+				
+				board.setNumber(number);
+				board.setWriter(writer);
+				board.setSubject(subject);
+				board.setCreated(created);
+				
+				list.add(board);
+			}
+			return list;
+			
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}finally{
+			try {
+				if(rs!=null) rs.close();
+				if(stmt!=null) stmt.close();
+				if(conn!=null) conn.close();
+			}catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return null;
 	}
 	
 	

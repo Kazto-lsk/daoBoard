@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import service.BoardService;
 import service.DeleteService;
 import service.InsertService;
+import service.LatestService;
 import service.ListService;
 import service.ReadService;
 import service.UpdateFormService;
@@ -51,6 +52,9 @@ public class FrontController extends HttpServlet {
 		}else if(command.equals("/update.do")) {
 			service = new UpdateService();
 			path = "redirect::list.do";
+		}else if(command.equals("/latestdocument.do")) {
+			service = new LatestService();
+			path = "/view/latest_document.jsp";
 		}
 		if(service!=null) service.execute(request, response);
 		
